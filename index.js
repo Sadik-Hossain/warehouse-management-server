@@ -1,9 +1,9 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion,ObjectId } = require("mongodb");
 const cors = require("cors");
 require("dotenv").config();
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 const app = express();
 
 //* middleware
@@ -34,6 +34,17 @@ async function run() {
       const inventory = await cursor.toArray();
       res.send(inventory);
     });
+
+ //* ======== endpoint for get particular data from db ==========
+ app.get("/inventory/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: ObjectId(id) };
+  const result = await inventoryCollection.findOne(query);
+  res.send(result);
+});
+
+
+
   } finally {
    
   }
