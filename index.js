@@ -61,17 +61,25 @@ async function run() {
       );
       res.send(result);
     });
-    //* Post new item
+    //* =========== Post new item =====================
     app.post("/inventory", async (req, res) => {
       const newItem = req.body;
       const result = await inventoryCollection.insertOne(newItem);
       res.send(result);
     });
-    //* delete item
+    //*============= delete item ========================
     app.delete("/inventory/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await inventoryCollection.deleteOne(query);
+      res.send(result);
+    });
+    //*================== search query ==================
+    app.get("/myitem", async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const cursor = inventoryCollection.find(query);
+      const result = await cursor.toArray();
       res.send(result);
     });
   } finally {
