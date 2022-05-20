@@ -42,14 +42,6 @@ async function run() {
     });
 
     //*=============== update quantity ========================
-    //*=============== recieving data from client ==============
-    app.post("/inventory/:id", (req, res) => {
-      const test = req.body;
-      console.log("client sent: ", test);
-      res.send({ h: `got ${test.quantity}` });
-    });
-
-    //* update something
     app.put("/inventory/:id", async (req, res) => {
       const id = req.params.id;
       const updateQty = req.body;
@@ -69,16 +61,16 @@ async function run() {
       );
       res.send(result);
     });
+    //* Post new item
+    app.post("/inventory", async (req, res) => {
+      const newItem = req.body;
+      const result = await inventoryCollection.insertOne(newItem);
+      res.send(result);
+    });
   } finally {
   }
 }
 run().catch(console.dir);
-// client.connect((err) => {
-//   const collection = client.db("furnituredb").collection("inventory");
-// //   console.log('db connet');
-//   // perform actions on the collection object
-//   client.close();
-// });
 
 app.get("/", (req, res) => {
   res.send("server running");
