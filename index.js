@@ -2,8 +2,7 @@ const express = require("express");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
 require("dotenv").config();
-
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5001;  
 const app = express();
 
 //* middleware
@@ -45,10 +44,10 @@ async function run() {
     app.put("/inventory/:id", async (req, res) => {
       const id = req.params.id;
       const updateQty = req.body;
-      //? filter hocce jetake update korte chao seta khuza
+
       const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
-      //? $set er moddhe obj akare jeta boshaba seta seta set hbe
+
       const updateDoc = {
         $set: {
           quantity: updateQty.quantity,
